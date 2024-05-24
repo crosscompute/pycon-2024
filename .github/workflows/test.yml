@@ -1,0 +1,27 @@
+---
+name: Clean
+on:
+  pull_request_target:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python clean.py
+      - run: |
+          git diff --quiet || git commit -am 'Autoclean'
+          git push
