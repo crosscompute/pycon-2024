@@ -1,0 +1,23 @@
+---
+name: Clean
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: write
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python clean.py
+      - run: python test.py
+      - run: |
+          git config user.name "Roy Hyunjin Han"
+          git config user.email "rhh@crosscompute.com"
+          git diff --quiet || git commit -am 'Autoclean'
+          git push
