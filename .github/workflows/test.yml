@@ -23,5 +23,7 @@ jobs:
           python-version: "3.12"
       - run: python clean.py
       - run: |
+          git config user.name "Roy Hyunjin Han"
+          git config user.email "rhh@crosscompute.com"
           git diff --quiet || git commit -am 'Autoclean'
           git push
